@@ -5,6 +5,7 @@ import life.kk.community.DTO.GithubUser;
 import life.kk.community.provider.GithubProvider;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,15 +16,23 @@ import java.io.IOException;
 public class AuthorizeController {
     @Autowired
     private GithubProvider githubProvider;
+    @Value("${github.client.id}")
+    private String clientID;
+
+    @Value("${github.client.secret}")
+    private String clientSecret;
+
+    @Value("${github.redirect.uri}")
+    private String redirectID;
 
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code" ) String code, @RequestParam(name = "state") String state) throws IOException {
         AccessToken accessToken = new AccessToken();
         accessToken.setCode(code);
         accessToken.setState(state);
-        accessToken.setClient_id("f282bb9de7ee51f1ca92");
-        accessToken.setClient_secret("7a66076aa333ba6d236dfdffa32c104b6afaaafb");
-        accessToken.setRedirect_uri("http://localhost:8887/callback");
+        accessToken.setClient_id(clientID);
+        accessToken.setClient_secret(clientSecret);
+        accessToken.setRedirect_uri(redirectID);
         String token = githubProvider.getAccessToken(accessToken);
         GithubUser user = githubProvider.getUser(token);
 
