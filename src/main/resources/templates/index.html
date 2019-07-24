@@ -28,7 +28,11 @@
                 <li><a href="https://github.com/login/oauth/authorize?client_id=f282bb9de7ee51f1ca92
                     &redirect_uri=http://localhost:8887/callback&scope=user&state=1">登录</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">我 <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <span th:if="${session.userinfo}" th:text="session.userinfo.name"></span>
+                        <span th:uless="${session.userinfo}" >我</span>
+                        <span class="caret"></span>
+                    </a>
                     <ul class="dropdown-menu">
                         <li><a href="#">Action</a></li>
                         <li><a href="#">Another action</a></li>

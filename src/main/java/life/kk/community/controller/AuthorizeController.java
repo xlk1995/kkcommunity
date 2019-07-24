@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Controller
@@ -26,7 +27,10 @@ public class AuthorizeController {
     private String redirectID;
 
     @GetMapping("/callback")
-    public String callback(@RequestParam(name = "code" ) String code, @RequestParam(name = "state") String state) throws IOException {
+    public String callback(@RequestParam(name = "code" ) String code,
+                           @RequestParam(name = "state") String state,
+                           HttpSession session)
+            throws IOException {
         AccessToken accessToken = new AccessToken();
         accessToken.setCode(code);
         accessToken.setState(state);
@@ -35,10 +39,16 @@ public class AuthorizeController {
         accessToken.setRedirect_uri(redirectID);
         String token = githubProvider.getAccessToken(accessToken);
         GithubUser user = githubProvider.getUser(token);
-
         System.out.println(user.getName());
+        if(user != null){
+            // login success
 
-        return "index";
+            session.setAttribute("userinfo",user);
+            return "redirect:index";
+        }else {
+            // login failed
+            return "redirect:index";
+        }
     }
 
 }
