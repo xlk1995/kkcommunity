@@ -25,14 +25,14 @@
                 <button type="submit" class="btn btn-default">提交</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="https://github.com/login/oauth/authorize?client_id=f282bb9de7ee51f1ca92
-                    &redirect_uri=http://localhost:8887/callback&scope=user&state=1">登录</a></li>
+                <li th:if="${session.userinfo == null}"><a href="https://github.com/login/oauth/authorize?client_id=f282bb9de7ee51f1ca92
+                    &redirect_uri=http://localhost:8887/callback&scope=user&state=1">登录</a>
+                </li>
+
+                <li th:if="${session.userinfo != null}" th:text="${session.userinfo.getName()}">
+                </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                        <span th:if="${session.userinfo}" th:text="session.userinfo.name"></span>
-                        <span th:uless="${session.userinfo}" >我</span>
-                        <span class="caret"></span>
-                    </a>
+
                     <ul class="dropdown-menu">
                         <li><a href="#">Action</a></li>
                         <li><a href="#">Another action</a></li>

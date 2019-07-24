@@ -39,15 +39,16 @@ public class AuthorizeController {
         accessToken.setRedirect_uri(redirectID);
         String token = githubProvider.getAccessToken(accessToken);
         GithubUser user = githubProvider.getUser(token);
-        System.out.println(user.getName());
+        //System.out.println(user.getName());
+        System.out.println(user);
         if(user != null){
             // login success
 
             session.setAttribute("userinfo",user);
-            return "redirect:index";
+            return "redirect:/";
         }else {
             // login failed
-            return "redirect:index";
+            return "redirect:/";
         }
     }
 
